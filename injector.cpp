@@ -12,7 +12,7 @@
 
 // ── targets ──────────────────────────────────────────────────────────────────
 static const wchar_t* TARGET_GAME    = L"stalcraftw.exe";
-static const wchar_t* TARGET_KILL    = L"EXENS Game Launcher.exe";
+static const wchar_t* TARGET_KILL    = L"ExensLauncher.exe";
 
 // ── helpers ──────────────────────────────────────────────────────────────────
 static void die(const wchar_t* msg, DWORD err = 0) {
