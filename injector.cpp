@@ -140,8 +140,12 @@ int WINAPI wWinMain(HINSTANCE, HINSTANCE, LPWSTR, int) {
     // 2. kill launcher
     int killed = killProcess(TARGET_KILL);
     if (killed > 0) {
-        // small pause to let the launcher fully exit
+        wchar_t killMsg[256];
+        wsprintfW(killMsg, L"Closed %d instance(s) of:\n%s", killed, TARGET_KILL);
+        info(killMsg);
         Sleep(500);
+    } else {
+        info(L"EXENS Game Launcher was not running\n(nothing to close)");
     }
 
     // 3. find game
