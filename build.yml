@@ -1,0 +1,34 @@
+name: Build DLL Injector
+
+on:
+  push:
+    branches: [ main, master ]
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup MSVC
+        uses: microsoft/setup-msbuild@v2
+
+      - name: Compile
+        shell: cmd
+        run: |
+          call "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Auxiliary\Build\vcvars64.bat"
+          cl.exe /std:c++20 /O2 /W3 /EHsc /MT ^
+            injector_gui.cpp ^
+            /Fe:DllInjector.exe ^
+            /link /SUBSYSTEM:WINDOWS /ENTRY:wWinMainCRTStartup ^
+            user32.lib kernel32.lib comctl32.lib shell32.lib psapi.lib advapi32.lib comdlg32.lib
+          if exist DllInjector.exe (echo BUILD OK) else (echo BUILD FAILED && exit /b 1)
+
+      - name: Upload EXE
+        uses: actions/upload-artifact@v4
+        with:
+          name: DllInjector
+          path: DllInjector.exe
+          retention-days: 30
